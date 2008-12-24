@@ -1,0 +1,6 @@
+name="pulseaudio"
+version="@VERSION@"
+description="OCaml bindings for pulseaudio"
+requires="@requires@"
+archive(byte)="pulseaudio.cma"
+archive(native)="pulseaudio.cmxa"
