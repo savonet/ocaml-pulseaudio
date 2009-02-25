@@ -34,6 +34,7 @@ CC = @CC@
 CFLAGS = @CFLAGS@ @pulseaudio_CFLAGS@ -Wall -DCAML_NAME_SPACE
 CPPFLAGS = @CPPFLAGS@
 INCDIRS = @INC@
+NO_CUSTOM = yes
 
 all: $(BEST)
 
