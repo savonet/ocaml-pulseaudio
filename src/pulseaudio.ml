@@ -27,15 +27,24 @@ type dir =
   | Dir_record
   | Dir_upload
 
+type buffer_attr =
+    {
+      max_length : int;
+      target_length : int;
+      prebuffering : int;
+      min_request : int;
+      fragment_size : int;
+    }
+
 module Simple = struct
   type t
 
   external free : t -> unit = "ocaml_pa_simple_free"
 
-  external create : string option -> string -> dir -> string option -> string -> sample -> map option -> t = "ocaml_pa_simple_new_byte" "ocaml_pa_simple_new"
+  external create : string option -> string -> dir -> string option -> string -> sample -> map option -> buffer_attr option -> t = "ocaml_pa_simple_new_byte" "ocaml_pa_simple_new"
 
-  let create ?server ~client_name ~dir ?dev ~stream_name ~sample ?map () =
-      create server client_name dir dev stream_name sample map
+  let create ?server ~client_name ~dir ?dev ~stream_name ~sample ?map ?attr () =
+      create server client_name dir dev stream_name sample map attr
 
   external write : t -> float array array -> int -> int -> unit = "ocaml_pa_simple_write_float"
 

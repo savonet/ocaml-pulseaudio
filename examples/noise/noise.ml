@@ -9,7 +9,12 @@ let () =
     }
   in
   let simple =
-    Simple.create ~client_name:"Test" ~dir:Dir_playback ~stream_name:"Noise" ~sample:ss ()
+    try
+      Simple.create ~client_name:"Test" ~dir:Dir_playback ~stream_name:"Noise" ~sample:ss ()
+    with
+      | Error n ->
+        Printf.eprintf "Error: %s\n%!" (string_of_error n);
+        exit (-1)
   in
   let buflen = 10240 in
   let buf =

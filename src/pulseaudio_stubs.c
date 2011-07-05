@@ -60,17 +60,31 @@ static pa_stream_direction_t dir_val(value dir)
   }
 }
 
-CAMLprim value ocaml_pa_simple_new(value server, value name, value dir, value device, value description, value sample, value map)
+CAMLprim value ocaml_pa_simple_new(value server, value name, value dir, value device, value description, value sample, value map, value attr)
 {
   CAMLparam5(server, name, dir, device, description);
-  CAMLxparam2(sample, map);
+  CAMLxparam3(sample, map, attr);
   CAMLlocal1(ans);
   pa_simple *simple;
   pa_sample_spec *ss;
   int err;
 
+  pa_buffer_attr *ba = NULL;
+  if (Is_block(attr))
+    {
+      ba = malloc(sizeof(pa_buffer_attr));
+      attr = Field(attr, 0);
+      ba->maxlength = Int_val(Field(attr, 0));
+      ba->tlength = Int_val(Field(attr, 1));
+      ba->prebuf = Int_val(Field(attr, 2));
+      ba->minreq = Int_val(Field(attr, 3));
+      ba->fragsize = Int_val(Field(attr, 4));
+    }
+
   ss = sample_spec_val(sample);
-  simple = pa_simple_new(string_opt_val(server), String_val(name), dir_val(dir), string_opt_val(device), String_val(description), ss, NULL, NULL, &err);
+  simple = pa_simple_new(string_opt_val(server), String_val(name), dir_val(dir), string_opt_val(device), String_val(description), ss, NULL, ba, &err);
+  if(ba)
+    free(ba);
   if(!simple)
   {
     free(ss);
@@ -86,7 +100,7 @@ CAMLprim value ocaml_pa_simple_new(value server, value name, value dir, value de
 
 CAMLprim value ocaml_pa_simple_new_byte(value *argv, int argc)
 {
-  return ocaml_pa_simple_new(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6]);
+  return ocaml_pa_simple_new(argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6], argv[7]);
 }
 
 static void check_err(int ret, int err)
