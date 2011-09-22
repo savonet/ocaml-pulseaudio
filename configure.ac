@@ -18,21 +18,8 @@ AC_PROG_CC()
 AC_CHECK_TOOL([AR],[ar],no)
 AC_SUBST(AR)
 PKG_PROG_PKG_CONFIG()
-#PKG_CHECK_MODULES(pulseaudio, libpulse, , [AC_MSG_ERROR(pulseaudio not found.)])
-
-# PKG_CHECK_MODULES loses when you need --libs-only-[lL]
-if ! $PKG_CONFIG --exists libpulse; then
-        AC_MSG_ERROR([libpulse not found])
-fi
-if ! $PKG_CONFIG --exists libpulse-simple; then
-        AC_MSG_ERROR([libpulse-simple not found])
-fi
-pulseaudio_CFLAGS=`$PKG_CONFIG --cflags libpulse libpulse-simple`
-AC_SUBST([pulseaudio_CFLAGS])
-pulseaudio_LIBS=`$PKG_CONFIG --libs-only-l libpulse libpulse-simple`
-AC_SUBST([pulseaudio_LIBS])
-pulseaudio_LDFLAGS=`$PKG_CONFIG --libs-only-L libpulse libpulse-simple`
-AC_SUBST([pulseaudio_LDFLAGS])
+PKG_CONFIG_CHECK_MODULE([libpulse])
+PKG_CONFIG_CHECK_MODULE([libpulse-simple])
 
 # substitutions to perform
 AC_SUBST(VERSION)
