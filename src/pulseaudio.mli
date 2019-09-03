@@ -50,6 +50,9 @@ module Simple : sig
 
   val write : t -> float array array -> int -> int -> unit
 
+  (** Write data stored in a bigarray. Samples are interleaved. *)
+  val write_ba : t -> (float, Bigarray.float32_elt, Bigarray.c_layout) Bigarray.Array1.t -> unit
+
   (** Wait until all data already written is played by the daemon. *)
   val drain : t -> unit
 

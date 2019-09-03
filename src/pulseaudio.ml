@@ -48,6 +48,8 @@ module Simple = struct
 
   external write : t -> float array array -> int -> int -> unit = "ocaml_pa_simple_write_float"
 
+  external write_ba : t -> (float, Bigarray.float32_elt, Bigarray.c_layout) Bigarray.Array1.t -> unit = "ocaml_pa_simple_write_float_ba"
+
   external drain : t -> unit = "ocaml_pa_simple_drain"
 
   external flush : t -> unit = "ocaml_pa_simple_flush"

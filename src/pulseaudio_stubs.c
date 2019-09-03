@@ -1,4 +1,5 @@
 #include <caml/alloc.h>
+#include <caml/bigarray.h>
 #include <caml/callback.h>
 #include <caml/custom.h>
 #include <caml/fail.h>
@@ -142,6 +143,25 @@ CAMLprim value ocaml_pa_simple_write_float(value _simple, value _buf, value _ofs
   ret = pa_simple_write(simple, buf, len * chans * sizeof(float), &err);
   caml_leave_blocking_section();
   free(buf);
+  check_err(ret, err);
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ocaml_pa_simple_write_float_ba(value _simple, value _buf)
+{
+  CAMLparam2(_simple, _buf);
+  CAMLlocal1(bufc);
+  struct caml_ba_array *ba = Caml_ba_array_val(_buf);
+  int len = ba->dim[0];
+  float *buf = ba->data;
+  int err;
+  int ret;
+  pa_simple *simple = Simple_val(_simple);
+
+  caml_enter_blocking_section();
+  ret = pa_simple_write(simple, buf, len * sizeof(float), &err);
+  caml_leave_blocking_section();
   check_err(ret, err);
 
   CAMLreturn(Val_unit);
