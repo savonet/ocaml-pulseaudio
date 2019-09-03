@@ -243,3 +243,22 @@ CAMLprim value ocaml_pa_read_float(value _simple, value _buf, value _ofs, value 
 
   CAMLreturn(Val_unit);
 }
+
+CAMLprim value ocaml_pa_read_float_ba(value _simple, value _buf)
+{
+  CAMLparam2(_simple, _buf);
+  pa_simple *simple = Simple_val(_simple);
+  struct caml_ba_array *ba = Caml_ba_array_val(_buf);
+  int buflen = caml_ba_byte_size(ba);
+  float *buf = ba->data;
+  int err, ret;
+
+  caml_enter_blocking_section();
+  ret = pa_simple_read(simple, buf, buflen, &err);
+  caml_leave_blocking_section();
+
+  if(ret < 0)
+    caml_raise_with_arg(*caml_named_value("pa_exn_error"), Val_int(err));
+
+  CAMLreturn(Val_unit);
+}

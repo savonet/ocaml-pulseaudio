@@ -48,6 +48,8 @@ module Simple : sig
 
   val read : t -> float array array -> int -> int -> unit
 
+  val read_ba : t -> (float, Bigarray.float32_elt, Bigarray.c_layout) Bigarray.Array1.t -> unit
+
   val write : t -> float array array -> int -> int -> unit
 
   (** Write data stored in a bigarray. Samples are interleaved. *)

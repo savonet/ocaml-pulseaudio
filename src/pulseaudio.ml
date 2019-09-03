@@ -57,4 +57,6 @@ module Simple = struct
   external latency : t -> int = "ocaml_pa_simple_get_latency"
 
   external read : t -> float array array -> int -> int -> unit = "ocaml_pa_read_float"
+
+  external read_ba : t -> (float, Bigarray.float32_elt, Bigarray.c_layout) Bigarray.Array1.t -> unit = "ocaml_pa_read_float_ba"
 end
