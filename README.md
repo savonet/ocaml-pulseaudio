@@ -1,7 +1,7 @@
 ocaml-pulseaudio
 
 
-This package contains an O'Caml interface for 
+This package contains an OCaml interface for 
 PulseAudio client library, 
 otherwise known as pulseaudio.
 
@@ -10,16 +10,16 @@ Please read the COPYING file before using this software.
 Prerequisites:
 ==============
 
-- ocaml >= 3.0.6 (haven't tried earlier versions)
-
-- pulseaudio >= 0.9.10 (haven't tried earlier versions)
-
-- findlib >= 0.8.1 (haven't tried earlier versions)
+- ocaml
+- pulseaudio
+- dune >= 2.0
 
 Compilation:
 ============
 
-	$ make all
+```
+$ dune build
+```
 
 This should build both the native and the byte-code version of the
 extension library.
@@ -27,7 +27,16 @@ extension library.
 Installation:
 =============
 
-	$ make install
+Via `opam`:
+
+```
+$ opam install samplerate
+```
+
+Via `dune` (for developers):
+```
+$ dune install
+```
 
 This should install the library file (using ocamlfind) in the
 appropriate place.

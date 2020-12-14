@@ -17,7 +17,7 @@ CAMLprim value ocaml_pa_strerror(value e)
 }
 
 /* char* for Some string or NULL for None */
-static char *string_opt_val(value v)
+static const char *string_opt_val(value v)
 {
   if(Is_long(v))
     return NULL;
