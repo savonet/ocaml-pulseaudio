@@ -1,4 +1,4 @@
-0.1.4 (unreleased)
+0.1.4 (14-12-2020)
 =====
 
 - Add `read_ba` and `write_ba`.
