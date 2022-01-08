@@ -112,8 +112,6 @@ static void check_err(int ret, int err) {
 
 CAMLprim value ocaml_pa_simple_free(value simple) {
   pa_simple_free(Simple_val(simple));
-  Store_field(simple, 0, (value)NULL);
-
   return Val_unit;
 }
 
