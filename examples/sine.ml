@@ -1,6 +1,5 @@
 open Pulseaudio
 
-let pi = atan 1. *. 4.
 let freq = 440.
 
 let () =
@@ -13,7 +12,7 @@ let () =
   in
   let simple =
     try
-      Simple.create ~client_name:"Test" ~dir:Dir_playback ~stream_name:"Noise" ~sample:ss ()
+      Simple.create ~client_name:"Test" ~dir:Dir_playback ~stream_name:"Sine" ~sample:ss ()
     with
     | Error n ->
       Printf.eprintf "Error: %s\n%!" (string_of_error n);
@@ -27,9 +26,9 @@ let () =
       for c = 0 to ss.sample_chans - 1 do
         buf.{i * ss.sample_chans + c} <- sin (freq *. !t)
       done;
-      t := !t +. 2. *. pi /. float ss.sample_rate;
+      t := !t +. 2. *. Float.pi /. float ss.sample_rate;
     done;
-    while !t >= 2. *. pi do t := !t -. 2. *. pi done;
+    while !t >= 2. *. Float.pi do t := !t -. 2. *. Float.pi done;
     Simple.write_ba simple buf
   done;
   Simple.free simple
