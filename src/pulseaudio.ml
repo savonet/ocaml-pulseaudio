@@ -48,6 +48,8 @@ module Simple = struct
 
   external write : t -> float array array -> int -> int -> unit = "ocaml_pa_simple_write_float"
 
+  external write_floatarray : t -> floatarray array -> int -> int -> unit = "ocaml_pa_simple_write_floatarray"
+
   external write_ba : t -> (float, Bigarray.float32_elt, Bigarray.c_layout) Bigarray.Array1.t -> unit = "ocaml_pa_simple_write_float_ba"
 
   external drain : t -> unit = "ocaml_pa_simple_drain"
@@ -57,6 +59,8 @@ module Simple = struct
   external latency : t -> int = "ocaml_pa_simple_get_latency"
 
   external read : t -> float array array -> int -> int -> unit = "ocaml_pa_read_float"
+
+  external read_floatarray : t -> floatarray array -> int -> int -> unit = "ocaml_pa_read_floatarray"
 
   external read_ba : t -> (float, Bigarray.float32_elt, Bigarray.c_layout) Bigarray.Array1.t -> unit = "ocaml_pa_read_float_ba"
 end

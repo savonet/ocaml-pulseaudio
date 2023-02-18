@@ -144,6 +144,35 @@ CAMLprim value ocaml_pa_simple_write_float(value _simple, value _buf,
   CAMLreturn(Val_unit);
 }
 
+CAMLprim value ocaml_pa_simple_write_floatarray(value _simple, value _buf,
+                                                value _ofs, value _len) {
+  CAMLparam2(_simple, _buf);
+  CAMLlocal1(bufc);
+  pa_simple *simple = Simple_val(_simple);
+  int ofs = Int_val(_ofs);
+  int len = Int_val(_len);
+  float *buf;
+  int err;
+  int ret;
+  int chans = Wosize_val(_buf);
+  int c, i;
+
+  buf = malloc(chans * len * sizeof(float));
+  for (c = 0; c < chans; c++) {
+    bufc = Field(_buf, c);
+    for (i = 0; i < len; i++)
+      buf[chans * i + c] = Double_flat_field(bufc, ofs + i);
+  }
+
+  caml_enter_blocking_section();
+  ret = pa_simple_write(simple, buf, len * chans * sizeof(float), &err);
+  caml_leave_blocking_section();
+  free(buf);
+  check_err(ret, err);
+
+  CAMLreturn(Val_unit);
+}
+
 CAMLprim value ocaml_pa_simple_write_float_ba(value _simple, value _buf) {
   CAMLparam2(_simple, _buf);
   CAMLlocal1(bufc);
@@ -228,6 +257,39 @@ CAMLprim value ocaml_pa_read_float(value _simple, value _buf, value _ofs,
     bufc = Field(_buf, c);
     for (i = 0; i < len; i++)
       Store_double_field(bufc, ofs + i, buf[chans * i + c]);
+  }
+  free(buf);
+
+  CAMLreturn(Val_unit);
+}
+
+CAMLprim value ocaml_pa_read_floatarray(value _simple, value _buf, value _ofs,
+                                        value _len) {
+  CAMLparam2(_simple, _buf);
+  CAMLlocal1(bufc);
+  pa_simple *simple = Simple_val(_simple);
+  int ofs = Int_val(_ofs);
+  int len = Int_val(_len);
+  float *buf;
+  int err, ret;
+  int chans = Simple_chans_val(_simple);
+  int c, i;
+
+  buf = malloc(chans * len * sizeof(float));
+
+  caml_enter_blocking_section();
+  ret = pa_simple_read(simple, buf, chans * len * sizeof(float), &err);
+  caml_leave_blocking_section();
+
+  if (ret < 0) {
+    free(buf);
+    caml_raise_with_arg(*caml_named_value("pa_exn_error"), Val_int(err));
+  }
+
+  for (c = 0; c < chans; c++) {
+    bufc = Field(_buf, c);
+    for (i = 0; i < len; i++)
+      Store_double_flat_field(bufc, ofs + i, buf[chans * i + c]);
   }
   free(buf);
 

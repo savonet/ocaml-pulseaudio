@@ -1,3 +1,7 @@
+0.1.6 (unreleased)
+=====
+* Added `floatarray` API
+
 0.1.5 (07-01-2022)
 =====
 
