@@ -1,47 +1,35 @@
-ocaml-pulseaudio
-================
+# ocaml-pulseaudio
 
-This package contains an OCaml interface for PulseAudio client library,
-otherwise known as pulseaudio.
+> [!WARNING]
+> This repository is read-only. All changes must be made in
+> [savonet/liquidsoap](https://github.com/savonet/liquidsoap) under
+> `src/modules/synced/pulseaudio/` and will be mirrored here automatically.
+
+OCaml bindings for [PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAudio/), a sound server for POSIX OSes.
 
 Please read the COPYING file before using this software.
 
-Prerequisites
--------------
+## Prerequisites
 
-- ocaml
-- pulseaudio
-- dune >= 2.0
+- OCaml >= 4.14
+- libpulse and libpulse-simple (e.g. `apt install libpulse-dev`)
+- dune >= 3.0
 
-Compilation
------------
-
-```
-$ dune build
-```
-
-This should build both the native and the byte-code version of the
-extension library.
-
-Installation
-------------
+## Installation
 
 Via `opam`:
 
 ```
-$ opam install samplerate
+$ opam install pulseaudio
 ```
 
-Via `dune` (for developers):
+## Building from source
+
 ```
+$ dune build
 $ dune install
 ```
 
-This should install the library file (using ocamlfind) in the
-appropriate place.
+## Contact
 
-Author
-------
-
-This author of this software may be contacted by electronic mail
-at the following address: savonet-users@lists.sourceforge.net.
+savonet-users@lists.sourceforge.net
